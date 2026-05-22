@@ -1,0 +1,38 @@
+# AsGuard Proprietary Free Use License
+
+Copyright (c) 2026 Mahmood Al Sarraj. All rights reserved.
+
+## 1. Definitions
+
+* **"Author"** refers to Mahmood Al Sarraj, the owner of all intellectual property and copyright in the Software.
+* **"Software"** refers to the compiled binaries (such as NuGet packages or library DLL files) of the AsGuard monitoring package.
+* **"Source Code"** refers to the human-readable programming instructions and files used to compile and build the Software.
+
+## 2. License Grant
+
+Subject to the terms of this License, the Author hereby grants you a free, worldwide, non-exclusive, non-transferable, non-sublicensable, perpetual license to download, install, and use the compiled Software (binaries) for both commercial and non-commercial purposes.
+
+## 3. Permitted Redistribution
+
+You may bundle and redistribute the compiled Software binaries (e.g. `AsGuard.dll`) strictly as an integrated component of your own software applications. 
+
+Standalone redistribution, rebranding, sublicensing, or selling of the Software binaries as a standalone product or library is strictly prohibited.
+
+## 4. Restrictions
+
+* **No Source Code Access:** No license, rights, or access to the Source Code of the Software is granted under this License.
+* **Reverse Engineering Prohibited:** You shall not, and shall not permit others to, reverse engineer, decompile, disassemble, translate, or otherwise attempt to discover the Source Code of the Software.
+* **No Modification:** You shall not modify, adapt, or create derivative works of the Software binaries.
+* **Proprietary Notices:** You must not remove, alter, or obscure any copyright, trademark, or other proprietary notices contained in or on the Software.
+
+## 5. Ownership
+
+The Author retains all right, title, and interest in and to the Software and its Source Code, including all intellectual property rights, copyrights, patents, and trademarks.
+
+## 6. Disclaimer of Warranties
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+## 7. Limitation of Liability
+
+IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
