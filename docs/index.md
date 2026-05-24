@@ -86,3 +86,4 @@ To get started with AsGuard in your application, follow the guides in order:
 5.  **[Enrichment & Correlation](features/enrichment-correlation.md)**: Group related processes and tag logs with user metadata.
 6.  **[Dashboard & Web API](features/dashboard-api.md)**: Learn to secure and navigate the UI and leverage the underlying REST API.
 7.  **[Alerts & Production Operations](features/alerts-production.md)**: Set up custom alert channels (Slack/Teams) and optimize for high-load systems.
+8.  **[APM & Trace Timelines](features/apm-tracing.md)**: Trace database queries (EF Core) and downstream calls (HttpClient) with Gantt timelines.

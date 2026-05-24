@@ -20,6 +20,7 @@ No external services required. No complex observability stack. Just visibility.
 | 🔒 **Sensitive data masking** | `[AsGuardMasked]` attribute + configurable header redaction |
 | 📝 **Body capture** | Request/response bodies with content-type allowlist |
 | 🔗 **Correlation IDs** | Distributed tracing with configurable headers (default: `X-Correlation-ID`) |
+| ⏱️ **APM & Trace Timelines** | Auto-tracks DB queries (EF Core) and HttpClient calls with Gantt charts |
 | ⚡ **Live SSE updates** | Real-time push notifications without SignalR |
 | 🗄️ **Multiple databases** | SQL Server, PostgreSQL, SQLite, or In-Memory |
 | 📈 **Exception analytics** | Trends, severity summaries, and configurable alerts |
@@ -92,6 +93,7 @@ Run your app and navigate to `/logs` to see the dashboard.
 | Enrichment & Correlation | [docs/features/enrichment-correlation.md](docs/features/enrichment-correlation.md) |
 | Dashboard & API | [docs/features/dashboard-api.md](docs/features/dashboard-api.md) |
 | Production & Alerts | [docs/features/alerts-production.md](docs/features/alerts-production.md) |
+| APM & Trace Timelines | [docs/features/apm-tracing.md](docs/features/apm-tracing.md) |
 
 ### External Resources
 

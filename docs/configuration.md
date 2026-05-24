@@ -16,6 +16,8 @@ Here is the exhaustive reference of all properties available on `RequestLoggingO
 | **QueueOverflowPolicy** | `QueueOverflowPolicy` | `QueueOverflowPolicy.DropNewest` | Behavior when the request log queue reaches capacity (`DropNewest` or `DropOldest`). |
 | **BatchSize** | `int` | `100` | Number of log entries flushed to the database in a single batch. |
 | **EnableExceptionLogging** | `bool` | `true` | Enables/disables exception and log event persistence. |
+| **EnableApmTracing** | `bool` | `true` | Enables/disables automatic APM tracing for database queries (EF Core) and downstream calls (HttpClient). |
+| **EnableW3CPropagation** | `bool` | `true` | Enables/disables W3C standard traceparent header context propagation across HTTP boundaries. |
 | **ExceptionQueueCapacity** | `int` | `5_000` | Maximum number of exception entries the in-memory queue can hold. |
 | **ExceptionQueueOverflowPolicy** | `QueueOverflowPolicy` | `QueueOverflowPolicy.DropNewest` | Behavior when the exception log queue reaches capacity (`DropNewest` or `DropOldest`). |
 | **ExceptionBatchSize** | `int` | `50` | Number of exception/log entries flushed to the database in a single batch. |
@@ -50,6 +52,12 @@ Here is the exhaustive reference of all properties available on `RequestLoggingO
 | **DashboardRoute** | `string` | `"/request-logs-ui"` | Route prefix for the monitoring dashboard. Empty disables dashboard mapping. |
 | **DashboardUsername** | `string` | `""` | Basic Authentication username required to access dashboard and stream. |
 | **DashboardPassword** | `string` | `""` | Basic Authentication password required to access dashboard and stream. |
+| **EnableHostMetrics** | `bool` | `true` | Enables process CPU, memory, and ThreadPool resource sampling and graphing. |
+| **HostMetricsSampleInterval** | `TimeSpan` | `15 seconds` | Sampling interval for host resource metrics. |
+| **MaxHostMetricsStored** | `int` | `120` | Maximum time-series samples retained in the circular metrics memory buffer (default is 120 samples, which stores 30 minutes of history at a 15-second interval). |
+| **EnableLiveLogConsole** | `bool` | `true` | Enables real-time ILogger console streaming to dashboard clients. |
+| **LiveLogConsoleMinLevel** | `LogLevel` | `LogLevel.Information` | Minimum log level forwarded to the live console terminal. |
+| **EnableHealthChecksVisualizer** | `bool` | `true` | Enables visual monitoring status cards for database and external health dependencies. |
 
 ---
 
@@ -156,3 +164,82 @@ builder.Services.AddRequestLogging(options =>
 
 ### Deactivating Retention
 By default, `RequestRetentionDays` and `ExceptionRetentionDays` are set to `null` (disabled). If you want to disable automatic deletion and manage tables yourself (e.g., via database partitioning or custom cron scripts), leave these values as `null`.
+
+---
+
+## Performance Metrics & Host Diagnostics
+
+AsGuard provides extensive process resource monitoring out-of-the-box. Performance records are cached entirely **in-memory** in a concurrent, thread-safe circular ring buffer, ensuring **zero database migrations** and a negligible storage footprint.
+
+```csharp
+builder.Services.AddRequestLogging(options =>
+{
+    // Enable system and process diagnostics graphing
+    options.EnableHostMetrics = true;
+
+    // Sample resource parameters every 30 seconds (Default: 15 seconds)
+    options.HostMetricsSampleInterval = TimeSpan.FromSeconds(30);
+
+    // Keep up to 240 samples in memory (2 hours of history at a 30s interval)
+    options.MaxHostMetricsStored = 240;
+});
+```
+
+Metrics captured include process CPU usage (adjusted for environment core counts), working set vs. private memory footprint, ThreadPool pending items, active threads, and GC counts.
+
+---
+
+## Live Application Console Logger
+
+You can stream live `ILogger` console logs straight onto your dashboard with sub-millisecond latencies using Server-Sent Events (SSE). 
+
+```csharp
+builder.Services.AddRequestLogging(options =>
+{
+    // Stream real-time logs to connected clients
+    options.EnableLiveLogConsole = true;
+
+    // Minimum severity level captured for the streaming terminal (Default: Information)
+    options.LiveLogConsoleMinLevel = LogLevel.Debug;
+});
+```
+
+---
+
+## Distributed Tracing & W3C Trace Context
+
+AsGuard supports standard **W3C Trace Context** out-of-the-box, allowing you to propagate trace identifiers across service boundaries using `traceparent` headers. This is essential for auditing execution graphs in microservices.
+
+```csharp
+builder.Services.AddRequestLogging(options =>
+{
+    // Enable W3C traceparent header propagation across downstream HttpClients (Default: true)
+    options.EnableW3CPropagation = true;
+});
+```
+
+### Traceparent Format & MD5 Detour:
+- Conforms perfectly to W3C `00-{traceId}-{spanId}-01` specifications.
+- If incoming traditional correlation headers (e.g., `X-Correlation-ID`) are present but do not comply with the 32-character hexadecimal requirement, AsGuard dynamically hashes the value using MD5. This derives a deterministic and valid 32-character hex traceId without altering the underlying correlation ID.
+
+---
+
+## Programmatic Dependency Health Checks
+
+Integrate programmatic dependencies status boards directly into the AsGuard dashboard with **zero configurations**:
+
+```csharp
+builder.Services.AddRequestLogging(options =>
+{
+    // Enable visual status cards for external databases and external APIs
+    options.EnableHealthChecksVisualizer = true;
+});
+```
+
+> [!NOTE]
+> This capability hooks programmatically into standard ASP.NET Core `HealthCheckService`. Make sure to register standard health checks on your application builder startup:
+> ```csharp
+> builder.Services.AddHealthChecks()
+>     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
+>     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+> ```

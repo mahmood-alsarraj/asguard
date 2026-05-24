@@ -56,6 +56,7 @@ All endpoints require HTTP Basic Authentication headers using the credentials co
 | **GET** | `/request-logs-api/exceptions/summary` | Retrieve log count statistics grouped by severity levels. |
 | **GET** | `/request-logs-api/exceptions/trends` | Retrieve exceptions timeline trends (hourly or daily). |
 | **DELETE** | `/request-logs-api/exceptions` | Delete exceptions matching query filters (or clear all). |
+| **GET** | `/request-logs-api/host-environment` | Retrieve system host diagnostics (uptime, OS version, .NET framework, CPU cores, machine/env). |
 
 ---
 
@@ -167,4 +168,23 @@ builder.Services.AddRequestLogging(options =>
     // Options: SummaryOnly (Minimal payload, default) or Full (Includes headers/bodies)
     options.BroadcastDetailMode = BroadcastDetailMode.SummaryOnly;
 });
+```
+
+---
+
+## 7. Advanced Diagnostics & Profiling Endpoints
+
+### A. Host Environment Summary (`GET /request-logs-api/host-environment`)
+Returns high-level system diagnostics in a sanitized format. Sensitive environmental settings are redacted, showing only safe keys.
+
+**Response Schema:**
+```json
+{
+  "machineName": "PROD-SERVER-01",
+  "osVersion": "Microsoft Windows 10.0.22631",
+  "frameworkDescription": ".NET 8.0.4",
+  "processorCount": 16,
+  "environment": "Production",
+  "uptime": "2d 04h 12m 10s"
+}
 ```
