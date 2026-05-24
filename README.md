@@ -31,7 +31,7 @@ No external services required. No complex observability stack. Just visibility.
 
 ---
 
-![Requests](images/requests.png)
+![Requests](images/requests-list.png)
 ---
 
 ## 📦 Installation
