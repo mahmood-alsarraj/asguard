@@ -43,10 +43,6 @@ By default, all raised alerts are written to standard application logs via `ILog
 
 To push alerts directly to Slack, MS Teams, internal paging services, or email, implement the **`IAsGuardAlertSink`** interface and register it in the dependency injection container.
 
-> [!NOTE]
-> **Type Naming Clarification**:
-> In the codebase, the physical file is named `IAsGaurdAlertSink.cs` (containing a minor typo). However, the public interface compiled in the assembly is correctly spelled **`IAsGuardAlertSink`**, and the alert model is **`AsGuardAlert`**, both located within the **`AsGuard.Services`** namespace.
-
 ### Step A: Implement the Webhook Sink
 Create a custom class to serialize the `AsGuardAlert` model and POST it to a chat webhook:
 
